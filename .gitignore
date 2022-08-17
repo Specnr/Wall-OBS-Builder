@@ -1,5 +1,7 @@
 scene*.json
 *.zip
 *.txt
-data/*
 *.pyc
+build/*
+dist/*
+*.spec

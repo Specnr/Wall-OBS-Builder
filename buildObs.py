@@ -9,7 +9,7 @@ def run_build_obs(config):
     # Generate sources
     sources = []
     for i in range(cols*rows):
-        with open("./defaults/default-instance-source.json") as f:
+        with open("../data/defaults/default-instance-source.json") as f:
             base = json.load(f)
             base["settings"]["window"] = f"Minecraft* - Instance {i+1}:GLFW30:javaw.exe"
             base["name"] = f"mc {i+1}"
@@ -21,7 +21,7 @@ def run_build_obs(config):
             sources.append(new_base)
     if fullscreen:
         for i in range(cols*rows):
-            with open("./defaults/default-instance-source.json") as f:
+            with open("../data/defaults/default-instance-source.json") as f:
                 base = json.load(f)
                 base["settings"]["window"] = f"Minecraft* - Instance {i+1}:GLFW30:javaw.exe"
                 base["name"] = f"gc-mc {i+1}"
@@ -36,7 +36,7 @@ def run_build_obs(config):
     wall_insts = []
     for i in range(cols*rows):
         bounds = (width / cols, height / rows)
-        with open("./defaults/default-wall-instance.json") as f:
+        with open("../data/defaults/default-wall-instance.json") as f:
             base = json.load(f)
             base["name"] = f"mc {i+1}"
             base["bounds"]["x"] = bounds[0]
@@ -48,14 +48,14 @@ def run_build_obs(config):
             wall_insts.append(base)
 
     wall = {}
-    with open("./defaults/default-wall.json") as f:
+    with open("../data/defaults/default-wall.json") as f:
         wall = json.load(f)
         wall["settings"]["items"] = wall_insts + wall["settings"]["items"]
 
     # Generate instance scenes
     inst_scenes = []
     for i in range(cols*rows):
-        with open("./defaults/default-instance-scene.json") as f:
+        with open("../data/defaults/default-instance-scene.json") as f:
             base = json.load(f)
             base["name"] = f"MultiMC-{i+1}"
             base["hotkeys"]["OBSBasic.SelectScene"][0]["key"] = f"OBS_KEY_NUM{i+1}"
@@ -68,7 +68,7 @@ def run_build_obs(config):
     # Generate Tinder scene
     tinder_details = []
     for i in range(cols*rows):
-        with open("./defaults/default-wall-instance.json") as f:
+        with open("../data/defaults/default-wall-instance.json") as f:
             base = json.load(f)
             base["name"] = f"t-mc {i+1}"
             base["bounds"]["x"] = width
@@ -76,7 +76,7 @@ def run_build_obs(config):
             base["id"] = (i**2) + 2
             tinder_details.append(base)
 
-    with open("./defaults/default-instance-scene.json") as f:
+    with open("../data/defaults/default-instance-scene.json") as f:
         base = json.load(f)
         base["name"] = f"Tinder"
         base["settings"]["id_counter"] = i + 2
@@ -84,7 +84,7 @@ def run_build_obs(config):
         inst_scenes.append(base)
 
     full_obs = {}
-    with open("./defaults/default-base.json") as f:
+    with open("../data/defaults/default-base.json") as f:
         full_obs = json.load(f)
         full_obs["scene_order"].append({"name": "Wall"})
         for i in range(len(inst_scenes)):
