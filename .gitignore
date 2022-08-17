@@ -1,1 +1,5 @@
-sceneCollection.json
+scene*.json
+*.zip
+*.txt
+data/*
+*.pyc
