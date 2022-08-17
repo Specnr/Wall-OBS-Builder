@@ -1,5 +1,6 @@
 from buildObs import run_build_obs
 from buildSceneSwitcher import run_build_scene_switcher
+import os
 
 
 def get_valid_input(ask, validity_check):
@@ -27,10 +28,20 @@ config["width"] = float(get_valid_input(
 config["height"] = float(get_valid_input(
     "Screen height (OBS base resolution): ", lambda x: x.isdigit() and int(x) > 0))
 
-try:
-    run_build_obs(config)
-    run_build_scene_switcher(config)
-    input("Complete, press enter to continue...")
-except Exception as e:
-    print(e)
-    input("An error has occurred, please try again...")
+if not os.path.exists("../data/mcdirs.txt"):
+    print("Missing mcdirs.txt, please run TheWall.ahk with instances open first.")
+    input("Exiting, press enter to continue...")
+else:
+    raw_mcdirs = {}
+    with open("../data/mcdirs.txt") as f:
+        for line in f:
+            inst_num, path = line.strip().split("~")
+            raw_mcdirs[int(inst_num)] = path
+    config["mcdirs"] = [raw_mcdirs[i+1] for i in range(len(raw_mcdirs))]
+    try:
+        ss_config = run_build_scene_switcher(config)
+        run_build_obs(config, ss_config)
+        input("Complete, press enter to continue...")
+    except Exception as e:
+        print(e)
+        input("An error has occurred, please try again...")

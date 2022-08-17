@@ -2,10 +2,12 @@ import json
 from copy import deepcopy
 
 
-def run_build_obs(config):
+def run_build_obs(config, ss_config):
     cols, rows = config["cols"], config["rows"]
     width, height = config["width"], config["height"]
     fullscreen = config["fullscreen"]
+    mcdirs = config["mcdirs"]
+
     # Generate sources
     sources = []
     for i in range(cols*rows):
@@ -19,6 +21,11 @@ def run_build_obs(config):
             new_base = deepcopy(base)
             new_base["name"] = f"t-mc {i+1}"
             sources.append(new_base)
+        with open("../data/defaults/default-lock.json") as f:
+            base = json.load(f)
+            base["name"] = f"lock {i+1}"
+            base["settings"]["file"] = f"{mcdirs[i]}lock.png"
+            sources.append(base)
     if fullscreen:
         for i in range(cols*rows):
             with open("../data/defaults/default-instance-source.json") as f:
@@ -34,6 +41,7 @@ def run_build_obs(config):
 
     # Generate wall
     wall_insts = []
+    wall_locks = []
     for i in range(cols*rows):
         bounds = (width / cols, height / rows)
         with open("../data/defaults/default-wall-instance.json") as f:
@@ -46,11 +54,19 @@ def run_build_obs(config):
             base["pos"]["x"] = bounds[0] * x
             base["pos"]["y"] = bounds[1] * y
             wall_insts.append(base)
+            new_base = deepcopy(base)
+            new_base["name"] = f"lock {i+1}"
+            new_base["bounds"]["x"] = height * 0.1
+            new_base["bounds"]["y"] = height * 0.1
+            new_base["pos"]["x"] += 10
+            new_base["pos"]["y"] += 10
+            wall_insts.append(new_base)
 
     wall = {}
     with open("../data/defaults/default-wall.json") as f:
         wall = json.load(f)
-        wall["settings"]["items"] = wall_insts + wall["settings"]["items"]
+        wall["settings"]["items"] = wall_insts + \
+            wall_locks + wall["settings"]["items"]
 
     # Generate instance scenes
     inst_scenes = []
@@ -92,6 +108,7 @@ def run_build_obs(config):
         full_obs["sources"] += sources
         full_obs["sources"].append(wall)
         full_obs["sources"] += inst_scenes
+    full_obs["modules"]["advanced-scene-switcher"] = ss_config
 
     with open("../data/sceneCollection.json", "w") as f:
         json.dump(full_obs, f, indent=2)

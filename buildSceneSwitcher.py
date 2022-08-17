@@ -68,6 +68,4 @@ def run_build_scene_switcher(config):
         ss_config = json.load(f)
         ss_config["macros"] = all_macros
 
-    # Write to file
-    with open("../data/sceneSwitcher.txt", "w") as f:
-        json.dump(ss_config, f, indent=2)
+    return ss_config
