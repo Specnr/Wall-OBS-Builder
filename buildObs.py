@@ -93,5 +93,5 @@ def run_build_obs(config):
         full_obs["sources"].append(wall)
         full_obs["sources"] += inst_scenes
 
-    with open("sceneCollection.json", "w") as f:
+    with open("../data/sceneCollection.json", "w") as f:
         json.dump(full_obs, f, indent=2)

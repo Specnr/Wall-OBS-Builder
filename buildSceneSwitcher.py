@@ -5,8 +5,10 @@ import os
 def run_build_scene_switcher(config):
     cols, rows = config["cols"], config["rows"]
     all_macros = []
-    inst_file = os.getcwd() + "\\data\\instance.txt"
-    bg_file = os.getcwd() + "\\data\\bg.txt"
+    inst_file = os.path.abspath(os.path.join(
+        os.getcwd(), os.pardir)) + "\\data\\instance.txt"
+    bg_file = os.path.abspath(os.path.join(
+        os.getcwd(), os.pardir)) + "\\data\\bg.txt"
     # Generate instance switcher macros
     for i in range(cols*rows):
         with open("../data/defaults/default-ss-instance.json") as f:
@@ -55,7 +57,7 @@ def run_build_scene_switcher(config):
     with open("../data/defaults/default-ss-tinder.json") as f:
         base = json.load(f)
         base["conditions"][0]["file"] = bg_file
-        base["conditions"][0]["text"] = 0
+        base["conditions"][0]["text"] = "0"
         base["name"] = f"Tinder hide all"
         base["actions"] = actions
         all_macros.append(base)
@@ -67,5 +69,5 @@ def run_build_scene_switcher(config):
         ss_config["macros"] = all_macros
 
     # Write to file
-    with open("sceneSwitcher.txt", "w") as f:
+    with open("../data/sceneSwitcher.txt", "w") as f:
         json.dump(ss_config, f, indent=2)
