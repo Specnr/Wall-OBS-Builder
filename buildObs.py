@@ -8,6 +8,9 @@ def run_build_obs(config, ss_config):
     fullscreen = config["fullscreen"]
     mcdirs = config["mcdirs"]
 
+    if rows*cols > len(mcdirs):
+        raise Exception(
+            "mcdirs.txt either empty or not doesnt have enough to support instance count")
     # Generate sources
     sources = []
     for i in range(cols*rows):
