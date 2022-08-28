@@ -4,6 +4,7 @@ import os
 
 def run_build_scene_switcher(config):
     cols, rows = config["cols"], config["rows"]
+    name_format = config["format"]
     all_macros = []
     inst_file = os.path.abspath(os.path.join(
         os.getcwd(), os.pardir)) + "\\data\\instance.txt"
@@ -13,7 +14,7 @@ def run_build_scene_switcher(config):
     for i in range(cols*rows):
         with open("../data/defaults/default-ss-instance.json") as f:
             base = json.load(f)
-            base["actions"][0]["scene"] = f"MultiMC-{i+1}"
+            base["actions"][0]["scene"] = f"{name_format}{i+1}"
             base["conditions"][0]["file"] = inst_file
             base["conditions"][0]["text"] = str(i+1)
             base["name"] = f"Instance {i+1} switch"

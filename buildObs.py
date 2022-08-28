@@ -5,7 +5,7 @@ from copy import deepcopy
 def run_build_obs(config, ss_config):
     cols, rows = config["cols"], config["rows"]
     width, height = config["width"], config["height"]
-    fullscreen = config["fullscreen"]
+    fullscreen, name_format = config["fullscreen"], config["format"]
     mcdirs = config["mcdirs"]
 
     if rows*cols > len(mcdirs):
@@ -76,7 +76,7 @@ def run_build_obs(config, ss_config):
     for i in range(cols*rows):
         with open("../data/defaults/default-instance-scene.json") as f:
             base = json.load(f)
-            base["name"] = f"MultiMC-{i+1}"
+            base["name"] = f"{name_format}{i+1}"
             base["hotkeys"]["OBSBasic.SelectScene"][0]["key"] = f"OBS_KEY_NUM{i+1}"
             base["settings"]["id_counter"] = i + 2
             base["settings"]["items"][0]["bounds"]["x"] = width
@@ -107,7 +107,7 @@ def run_build_obs(config, ss_config):
         full_obs = json.load(f)
         full_obs["scene_order"].append({"name": "Wall"})
         for i in range(len(inst_scenes)):
-            full_obs["scene_order"].append({"name": f"MultiMC-{i+1}"})
+            full_obs["scene_order"].append({"name": f"{name_format}{i+1}"})
         full_obs["sources"] += sources
         full_obs["sources"].append(wall)
         full_obs["sources"] += inst_scenes

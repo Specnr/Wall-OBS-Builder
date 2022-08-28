@@ -27,6 +27,8 @@ config["width"] = float(get_valid_input(
     "Screen width (OBS base resolution): ", lambda x: x.isdigit() and int(x) > 0))
 config["height"] = float(get_valid_input(
     "Screen height (OBS base resolution): ", lambda x: x.isdigit() and int(x) > 0))
+config["format"] = get_valid_input(
+    "Current window/game capture naming format (leave blank if setting up new scene collection): ", lambda x: x.strip() != "")
 
 if not os.path.exists("../data/mcdirs.txt"):
     print("Missing mcdirs.txt, please run TheWall.ahk with instances open first.")
