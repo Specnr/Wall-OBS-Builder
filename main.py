@@ -27,8 +27,12 @@ config["width"] = float(get_valid_input(
     "Screen width (OBS base resolution): ", lambda x: x.isdigit() and int(x) > 0))
 config["height"] = float(get_valid_input(
     "Screen height (OBS base resolution): ", lambda x: x.isdigit() and int(x) > 0))
-config["format"] = get_valid_input(
-    "Current window/game capture naming format (leave blank if setting up new scene collection): ", lambda x: x.strip() != "")
+config["scene_format"] = get_valid_input(
+    "Instance scene naming format (eg: 'MultiMC-'): ", lambda x: x.strip() != "")
+config["inst_format"] = get_valid_input(
+    "Window capture format (eg: 'mc '): ", lambda x: x.strip() != "")
+config["game_format"] = get_valid_input(
+    "Game capture format (eg: 'gc-mc '): ", lambda x: x.strip() != "") if config["fullscreen"] else None
 
 if not os.path.exists("../data/mcdirs.txt"):
     print("Missing mcdirs.txt, please run TheWall.ahk with instances open first.")

@@ -4,7 +4,7 @@ import os
 
 def run_build_scene_switcher(config):
     cols, rows = config["cols"], config["rows"]
-    name_format = config["format"]
+    name_format, inst_format = config["scene_format"], config["inst_format"]
     all_macros = []
     inst_file = os.path.abspath(os.path.join(
         os.getcwd(), os.pardir)) + "\\data\\instance.txt"
@@ -35,7 +35,7 @@ def run_build_scene_switcher(config):
                 base = json.load(f)
                 base["action"] = int(i != j)
                 base["settings"] = '{\n    \\"client_area\\": true,\n    \\"compatibility\\": false,\n    \\"cursor\\": true,\n    \\"method\\": 0,\n    \\"priority\\": 2,\n    \\"window\\": \\"Minecraft* - Instance 1:GLFW30:javaw.exe\\"\n}\n'
-                base["source"] = f"t-mc {j+1}"
+                base["source"] = f"t-{inst_format}{j+1}"
                 actions.append(base)
         with open("../data/defaults/default-ss-tinder.json") as f:
             base = json.load(f)
@@ -53,7 +53,7 @@ def run_build_scene_switcher(config):
             base = json.load(f)
             base["action"] = 1
             base["settings"] = '{\n    \\"client_area\\": true,\n    \\"compatibility\\": false,\n    \\"cursor\\": true,\n    \\"method\\": 0,\n    \\"priority\\": 2,\n    \\"window\\": \\"Minecraft* - Instance 1:GLFW30:javaw.exe\\"\n}\n'
-            base["source"] = f"t-mc {j+1}"
+            base["source"] = f"t-{inst_format}{j+1}"
             actions.append(base)
     with open("../data/defaults/default-ss-tinder.json") as f:
         base = json.load(f)
@@ -69,7 +69,7 @@ def run_build_scene_switcher(config):
         ss_config = json.load(f)
         ss_config["macros"] = all_macros
 
-    with open("../data/sceneSwitcherConfig.json", "w") as f:
+    with open("../data/sceneSwitcherConfig.txt", "w") as f:
         json.dump(ss_config, f, indent=2)
 
     return ss_config

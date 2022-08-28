@@ -5,7 +5,9 @@ from copy import deepcopy
 def run_build_obs(config, ss_config):
     cols, rows = config["cols"], config["rows"]
     width, height = config["width"], config["height"]
-    fullscreen, name_format = config["fullscreen"], config["format"]
+    fullscreen = config["fullscreen"]
+    name_format, inst_format, game_format = config[
+        "scene_format"], config["inst_format"], config["game_format"]
     mcdirs = config["mcdirs"]
 
     if rows*cols > len(mcdirs):
@@ -17,12 +19,12 @@ def run_build_obs(config, ss_config):
         with open("../data/defaults/default-instance-source.json") as f:
             base = json.load(f)
             base["settings"]["window"] = f"Minecraft* - Instance {i+1}:GLFW30:javaw.exe"
-            base["name"] = f"mc {i+1}"
+            base["name"] = f"{inst_format}{i+1}"
             base["id"] = "window_capture"
             base["versioned_id"] = "window_capture"
             sources.append(base)
             new_base = deepcopy(base)
-            new_base["name"] = f"t-mc {i+1}"
+            new_base["name"] = f"t-{inst_format}{i+1}"
             sources.append(new_base)
         with open("../data/defaults/default-lock.json") as f:
             base = json.load(f)
@@ -34,7 +36,7 @@ def run_build_obs(config, ss_config):
             with open("../data/defaults/default-instance-source.json") as f:
                 base = json.load(f)
                 base["settings"]["window"] = f"Minecraft* - Instance {i+1}:GLFW30:javaw.exe"
-                base["name"] = f"gc-mc {i+1}"
+                base["name"] = f"{game_format}{i+1}"
                 base["settings"]["capture_mode"] = "window"
                 base["settings"]["priority"] = 0
                 base["settings"]["hook_rate"] = 3
@@ -49,7 +51,7 @@ def run_build_obs(config, ss_config):
         bounds = (width / cols, height / rows)
         with open("../data/defaults/default-wall-instance.json") as f:
             base = json.load(f)
-            base["name"] = f"mc {i+1}"
+            base["name"] = f"{inst_format}{i+1}"
             base["bounds"]["x"] = bounds[0]
             base["bounds"]["y"] = bounds[1]
             base["id"] = i + 2
@@ -81,7 +83,7 @@ def run_build_obs(config, ss_config):
             base["settings"]["id_counter"] = i + 2
             base["settings"]["items"][0]["bounds"]["x"] = width
             base["settings"]["items"][0]["bounds"]["y"] = height
-            base["settings"]["items"][0]["name"] = f"gc-mc {i+1}" if fullscreen else f"mc {i+1}"
+            base["settings"]["items"][0]["name"] = f"{game_format}{i+1}" if fullscreen else f"{inst_format}{i+1}"
             inst_scenes.append(base)
 
     # Generate Tinder scene
@@ -89,7 +91,7 @@ def run_build_obs(config, ss_config):
     for i in range(cols*rows):
         with open("../data/defaults/default-wall-instance.json") as f:
             base = json.load(f)
-            base["name"] = f"t-mc {i+1}"
+            base["name"] = f"t-{inst_format}{i+1}"
             base["bounds"]["x"] = width
             base["bounds"]["y"] = height
             base["id"] = (i**2) + 2
